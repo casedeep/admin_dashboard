@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Members</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #ccc;
+      font-family: Arial, sans-serif;
+      padding: 40px;
+    }
+
+    a {
+      color: #6b97ae;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #79bbda;
+    }
+
+    h1, h2 {
+      font-size: 12px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 6px;
+      margin-bottom: 15px;
+    }
+
+    .form-section {
+      display: none;
+      margin-bottom: 20px;
+      position: relative;
+      max-width: 400px;
+    }
+
+    .form-section input[type="text"],
+    .form-section input[type="password"] {
+      width: 94.5%;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 6px;
+      color: #ccc;
+    }
+
+    .checkbox-group {
+      margin-bottom: 10px;
+    }
+
+    .checkbox-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      padding: 8px 16px;
+      background-color: #2a3b52;
+      border: none;
+      border-radius: 5px;
+      color: #ccc;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3a4b65;
+    }
+
+    .member {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #1e1e1e;
+      padding: 10px;
+      border: 1px solid #333;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    .member-actions button {
+      margin-left: 5px;
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+
+    #createMemberButton {
+      margin-bottom: 15px;
+    }
+
+    .form-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: #ccc;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .extra-options {
+      margin-left: 20px;
+      font-size: 13px;
+      color: #aaa;
+    }
+
+    .extra-options input[type="text"] {
+      width: 90%;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>
+    <a href="admin_dashboard.html">Admin Dashboard</a>
+    <font style="color: #555;">|</font>
+    <a href="#">Logout</a><br><br>
+    <span style="font-size: large;">Members</span>
+  </h1>
+
+  <button id="createMemberButton" onclick="showCreateMemberForm()">Create Member</button>
+
+  <div class="form-section" id="createMemberForm">
+    <div class="form-header">
+      <p id="formTitle">Create Member</p>
+      <button class="close-btn" onclick="hideCreateMemberForm()">✕</button>
+    </div>
+    <input type="text" id="memberUsername" placeholder="Username">
+    <input type="password" id="memberPassword" placeholder="Password">
+    <div class="checkbox-group">
+      <label>
+        <input type="checkbox" id="manageUsers" onchange="toggleExtraOptions('manageUsers')"> Manage Users
+      </label>
+      <div id="manageUsersOptions" class="extra-options" style="display:none;">
+        <label><input type="radio" name="manageUsersIndustry" value="all" checked> All Industries</label>
+        <label><input type="radio" name="manageUsersIndustry" value="custom"> Industry URL Path:
+          <input type="text" id="manageUsersUrl" placeholder="/industry-path">
+        </label>
+      </div>
+    
+      <label>
+        <input type="checkbox" id="managePromotedOrders" onchange="toggleExtraOptions('managePromotedOrders')"> Manage Promoted Orders
+      </label>
+      <div id="managePromotedOrdersOptions" class="extra-options" style="display:none;">
+        <label><input type="radio" name="managePromotedOrdersIndustry" value="all" checked> All Industries</label>
+        <label><input type="radio" name="managePromotedOrdersIndustry" value="custom"> Industry URL Path:
+          <input type="text" id="managePromotedOrdersUrl" placeholder="/industry-path">
+        </label>
+      </div>
+    
+      <label>
+        <input type="checkbox" id="manageDirectOrders" onchange="toggleExtraOptions('manageDirectOrders')"> Manage Direct Orders
+      </label>
+      <div id="manageDirectOrdersOptions" class="extra-options" style="display:none;">
+        <label><input type="radio" name="manageDirectOrdersIndustry" value="all" checked> All Industries</label>
+        <label><input type="radio" name="manageDirectOrdersIndustry" value="custom"> Industry URL Path:
+          <input type="text" id="manageDirectOrdersUrl" placeholder="/industry-path">
+        </label>
+      </div>
+    
+      <label>
+        <input type="checkbox" id="manageCertification" onchange="toggleExtraOptions('manageCertification')"> Manage Certification
+      </label>
+      <div id="manageCertificationOptions" class="extra-options" style="display:none;">
+        <label><input type="radio" name="manageCertificationIndustry" value="all" checked> All Industries</label>
+        <label><input type="radio" name="manageCertificationIndustry" value="custom"> Industry URL Path:
+          <input type="text" id="manageCertificationUrl" placeholder="/industry-path">
+        </label>
+      </div>
+    </div>
+    <div class="buttons">
+      <button onclick="addOrEditMember()">OK</button>
+      <button onclick="resetForm(); hideCreateMemberForm()">Cancel</button>
+    </div>
+  </div>
+
+  <h2>Members List</h2>
+  <div id="memberList"></div>
+
+<script>
+  const memberList = [];
+  let currentEditIndex = -1;
+
+function showCreateMemberForm() {
+  const form = document.getElementById('createMemberForm');
+  const title = document.getElementById('formTitle');
+  const createBtn = document.getElementById('createMemberButton');
+
+  form.style.display = 'block';
+  createBtn.style.display = 'none';
+
+  if (currentEditIndex === -1) {
+    title.innerText = 'Create Member';
+    resetForm();
+  } else {
+    title.innerText = 'Edit Member';
+    const member = memberList[currentEditIndex];
+    document.getElementById('memberUsername').value = member.username;
+    document.getElementById('memberPassword').value = member.password;
+
+    ['manageUsers', 'managePromotedOrders', 'manageDirectOrders', 'manageCertification'].forEach(key => {
+      const checked = member[key];
+      const industry = member[`${key}Industry`];
+
+      const checkbox = document.getElementById(key);
+      checkbox.checked = checked;
+      toggleExtraOptions(key);
+
+      const inputField = document.getElementById(`${key}Url`);
+      const radioAll = document.querySelector(`input[name="${key}Industry"][value="all"]`);
+      const radioCustom = document.querySelector(`input[name="${key}Industry"][value="custom"]`);
+
+      if (industry === 'All Industries') {
+        radioAll.checked = true;
+        inputField.value = '';
+      } else {
+        radioCustom.checked = true;
+        inputField.value = industry;
+      }
+
+      updateIndustryInputState(key);
+    });
+  }
+}
+
+function hideCreateMemberForm() {
+  document.getElementById('createMemberForm').style.display = 'none';
+  document.getElementById('createMemberButton').style.display = 'inline-block';
+  resetForm();
+  currentEditIndex = -1;
+}
+
+  function toggleExtraOptions(key) {
+  const checkbox = document.getElementById(key);
+  const options = document.getElementById(`${key}Options`);
+  options.style.display = checkbox.checked ? 'block' : 'none';
+
+  if (checkbox.checked) {
+    document.querySelectorAll(`input[name="${key}Industry"]`).forEach(radio => {
+      radio.addEventListener('change', () => updateIndustryInputState(key));
+    });
+  }
+
+  updateIndustryInputState(key);
+}
+
+  function updateIndustryInputState(key) {
+    const isAllChecked = document.querySelector(`input[name="${key}Industry"][value="all"]`).checked;
+    const input = document.getElementById(`${key}Url`);
+    input.disabled = isAllChecked;
+    if (isAllChecked) input.value = '';
+  }
+
+  ['manageUsers', 'managePromotedOrders', 'manageDirectOrders', 'manageCertification'].forEach(key => {
+  if (member[key]) {
+    const industry = member[`${key}Industry`] || '';
+    details += `✔️ ${key.replace('manage', '').replace(/([A-Z])/g, ' $1')} (${industry || 'N/A'})<br/>`;
+  }
+});
+
+function addOrEditMember() {
+  const username = document.getElementById('memberUsername').value.trim();
+  const passwordInput = document.getElementById('memberPassword').value;
+
+  if (!username) {
+    alert('Please enter a username');
+    return;
+  }
+
+  const isCreating = currentEditIndex === -1;
+
+  if (isCreating && !passwordInput) {
+    alert('Please enter a password for new member');
+    return;
+  }
+
+  const hasAccess = ['manageUsers', 'managePromotedOrders', 'manageDirectOrders', 'manageCertification']
+    .some(key => document.getElementById(key).checked);
+
+  if (!hasAccess) {
+    alert('Please assign at least one access permission');
+    return;
+  }
+
+  for (const key of ['manageUsers', 'managePromotedOrders', 'manageDirectOrders', 'manageCertification']) {
+    const isChecked = document.getElementById(key).checked;
+    if (isChecked) {
+      const isCustom = document.querySelector(`input[name="${key}Industry"]:checked`).value === 'custom';
+      const pathValue = document.getElementById(`${key}Url`).value.trim();
+      if (isCustom && !pathValue) {
+        alert(`Please enter Industry URL Path for ${key.replace('manage', '')}`);
+        return;
+      }
+    }
+  }
+
+  const memberData = {
+    username,
+    password: isCreating ? passwordInput : (passwordInput || memberList[currentEditIndex].password)
+  };
+
+  ['manageUsers', 'managePromotedOrders', 'manageDirectOrders', 'manageCertification'].forEach(key => {
+    const checkbox = document.getElementById(key);
+    const isChecked = checkbox.checked;
+    memberData[key] = isChecked;
+
+    if (isChecked) {
+      const isAll = document.querySelector(`input[name="${key}Industry"]:checked`).value === 'all';
+      memberData[`${key}Industry`] = isAll ? 'All Industries' : document.getElementById(`${key}Url`).value.trim();
+    } else {
+      memberData[`${key}Industry`] = null;
+    }
+  });
+
+  if (isCreating) {
+    memberList.push(memberData);
+  } else {
+    memberList[currentEditIndex] = memberData;
+  }
+
+  renderList();
+  hideCreateMemberForm();
+}
+
+function resetForm() {
+  document.getElementById('memberUsername').value = '';
+  document.getElementById('memberPassword').value = '';
+
+  ['manageUsers', 'managePromotedOrders', 'manageDirectOrders', 'manageCertification'].forEach(key => {
+    const checkbox = document.getElementById(key);
+    checkbox.checked = false;
+    toggleExtraOptions(key);
+    document.getElementById(`${key}Url`).value = '';
+    document.querySelector(`input[name="${key}Industry"][value="all"]`).checked = true;
+  });
+
+}
+
+
+function renderList() {
+  const container = document.getElementById('memberList');
+  container.innerHTML = '';
+  memberList.forEach((member, index) => {
+    const div = document.createElement('div');
+    div.className = 'member';
+    let details = '';
+    ['manageUsers', 'managePromotedOrders', 'manageDirectOrders', 'manageCertification'].forEach(key => {
+      if (member[key]) {
+        const industry = member[`${key}Industry`] || '';
+        details += `✔️ ${key.replace('manage', '').replace(/([A-Z])/g, ' $1')} (${industry || 'N/A'})<br/>`;
+      }
+    });
+
+    div.innerHTML = `
+      <div>
+        <strong>${member.username}</strong><br/>
+        <small>${details}</small>
+      </div>
+      <div class="member-actions">
+        <button onclick="moveUp(${index})">Up</button>
+        <button onclick="moveDown(${index})">Down</button>
+        <button onclick="editMember(${index})">Edit</button>
+        <button onclick="deleteMember(${index})">Delete</button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+  function moveUp(index) {
+    if (index === 0) return;
+    [memberList[index - 1], memberList[index]] = [memberList[index], memberList[index - 1]];
+    renderList();
+  }
+
+  function moveDown(index) {
+    if (index === memberList.length - 1) return;
+    [memberList[index + 1], memberList[index]] = [memberList[index], memberList[index + 1]];
+    renderList();
+  }
+
+  function deleteMember(index) {
+    if (confirm("Are you sure to delete?")) {
+      memberList.splice(index, 1);
+      renderList();
+    }
+  }
+
+  function editMember(index) {
+    currentEditIndex = index;
+    showCreateMemberForm();
+  }
+</script>
+
+</body>
+</html>

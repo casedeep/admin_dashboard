@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Currency</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #ccc;
+      font-family: Arial, sans-serif;
+      padding: 40px;
+    }
+
+    a {
+      color: #6b97ae;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #79bbda;
+    }
+
+    h1 {
+      font-size: 12px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 6px;
+      margin-bottom: 15px;
+    }
+
+    .form-section {
+      max-width: 400px;
+    }
+
+    .form-section input[type="text"] {
+      width: 94.5%;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 6px;
+      color: #ccc;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      padding: 8px 16px;
+      background-color: #2a3b52;
+      border: none;
+      border-radius: 5px;
+      color: #ccc;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3a4b65;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>
+    <a href="admin_dashboard.html">Admin Dashboard</a> 
+    <font style="color: #555;">|</font> 
+    <a href="#">Logout</a><br><br>
+    <span style="font-size: large;">Manage Currency</span>
+  </h1>
+
+  <div class="form-section">
+    <input type="text" id="currencyCode" placeholder="Currency Code" maxlength="3" value="USD">
+    <input type="text" id="currencySymbol" placeholder="Currency Symbol" maxlength="1" value="$">
+    <div class="buttons">
+      <button onclick="alert('Saved.')">Save</button>
+      <button onclick="location.href='admin_dashboard.html'">Cancel</button>
+    </div>
+  </div>
+
+</body>
+</html>

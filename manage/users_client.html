@@ -1,0 +1,214 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Manage Users</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #121212;
+                color: #ccc;
+                margin: 0;
+                padding: 0;
+                font-size: 12px;
+                font-weight: normal;
+            }
+            .container {
+                width: 90%;
+                max-width: 1440px;
+                margin: 20px auto;
+                padding: 20px;
+                background-color: #1e1e1e;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            }
+            h1, h2 {
+                border-bottom: 2px solid #444;
+                padding-bottom: 10px;
+                font-size: 12px;
+            }
+            .search, .sort {
+             margin-bottom: 5px;
+             display: flex;
+             gap: 10px;
+            }
+            .search input, .sort select {
+             height: 36px;
+             padding: 10px;
+             border: 1px solid #444;
+             border-radius: 5px;
+             background-color: #333;
+             color: #ccc;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 10px;
+                background: #222;
+                font-size: 12px;
+            }
+            th, td {
+                padding: 12px;
+                border: 1px solid #444;
+                text-align: left;
+                font-size: 12px;
+            }
+            th {
+                background-color: #444;
+                cursor: pointer;
+                font-size: 12px;
+            }
+            tr:hover {
+                background-color: #333;
+                font-size: 12px;
+            }
+            button {
+                padding: 8px 12px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                cursor: pointer;
+                border-radius: 4px;
+            }
+            button:hover {
+                background-color: #0056b3;
+            }
+            a {
+                color: #6b97ae;
+                text-decoration: none;
+            }
+            a:hover {
+                color: #79bbda;
+            }
+        </style>
+    </head>
+<body>
+    <div class="container">
+
+      <h1><a href="member_dashboard.html">Member Dashboard</a> <font style="color: #555;">-</font> username <font style="color: #555;">|</font> <a href="#">Logout</a><br><br><span style="font-size: large;">Manage Users <font style="color: #555;">|</font> All Industries <font style="color: #555;">-</font> Provider: 150 <font style="color: #555;">/</font> Certified: 5</span></h1>
+        <div class="section">
+            <div class="table-container">
+                <div style="display: flex; width: 1296px; border-radius: 10px; overflow: hidden; border: 1px solid #000;">
+                    <label style="width: 144px; padding: 10px; text-align: center; cursor: pointer; background-color: #aaa; color: #000;">
+                      <input type="radio" name="userToggle" value="UserA" checked style="display: none;" onchange="toggleButtons(this);">
+                      All Industries<br>150 (+1)
+                    </label>
+                    <label style="width: 144px; padding: 10px; text-align: center; cursor: pointer; background-color: #000; color: #aaa;">
+                      <input type="radio" name="userToggle" value="UserB" style="display: none;" onchange="toggleButtons(this);">
+                      Tutoring<br>700 (+12)
+                    </label>
+                    <label style="width: 144px; padding: 10px; text-align: center; cursor: pointer; background-color: #000; color: #aaa;">
+                      <input type="radio" name="userToggle" value="UserC" style="display: none;" onchange="toggleButtons(this);">
+                      Errands<br>80 (+3)
+                    </label>
+                    <label style="width: 144px; padding: 10px; text-align: center; cursor: pointer; background-color: #000; color: #aaa;">
+                      <input type="radio" name="userToggle" value="UserD" style="display: none;" onchange="toggleButtons(this);">
+                      Industriy Name<br>250
+                    </label>
+                    <label style="width: 144px; padding: 10px; text-align: center; cursor: pointer; background-color: #000; color: #aaa;">
+                      <input type="radio" name="userToggle" value="UserE" style="display: none;" onchange="toggleButtons(this);">
+                      Industriy Name<br>102 (+2)
+                    </label>
+                    <label style="width: 144px; padding: 10px; text-align: center; cursor: pointer; background-color: #000; color: #aaa;">
+                      <input type="radio" name="userToggle" value="UserF" style="display: none;" onchange="toggleButtons(this);">
+                      Industriy Name<br>390 (+1)
+                    </label>
+                    <label style="width: 144px; padding: 10px; text-align: center; cursor: pointer; background-color: #000; color: #aaa;">
+                      <input type="radio" name="userToggle" value="UserG" style="display: none;" onchange="toggleButtons(this);">
+                      Industriy Name<br>212
+                    </label>
+                    <label style="width: 144px; padding: 10px; text-align: center; cursor: pointer; background-color: #000; color: #aaa;">
+                      <input type="radio" name="userToggle" value="UserH" style="display: none;" onchange="toggleButtons(this);">
+                      Industriy Name<br>134 (+6)
+                    </label>
+                    <label style="width: 144px; padding: 10px; text-align: center; cursor: pointer; background-color: #000; color: #aaa;">
+                      <input type="radio" name="userToggle" value="UserH" style="display: none;" onchange="toggleButtons(this);">
+                      Industriy Name<br>134 (+6)
+                    </label>
+                  </div>
+                  
+                  <script>
+                    function toggleButtons(radio) {
+                      const labels = radio.closest('div').querySelectorAll('label');
+                      labels.forEach(label => {
+                        if (label.contains(radio)) {
+                          label.style.backgroundColor = '#aaa';
+                          label.style.color = '#000';
+                        } else {
+                          label.style.backgroundColor = '#000';
+                          label.style.color = '#aaa';
+                        }
+                      });
+                    }
+                  </script>
+                <br>
+                <div style="display: flex; width: 288px; border-radius: 10px; overflow: hidden; border: 1px solid #000;">
+                    <label style="width: 144px; padding: 10px; text-align: center; cursor: pointer; background-color: #000; color: #aaa;">
+                      <input type="radio" name="userToggle" value="UserA" checked style="display: none;" onclick="
+                        this.parentElement.style.backgroundColor='#aaa';
+                        this.parentElement.style.color='#000';
+                        this.parentElement.nextElementSibling.style.backgroundColor='#000';
+                        this.parentElement.nextElementSibling.style.color='#aaa';
+                        window.location.href='users_provider.html';
+                      ">
+                      Provider<br>
+                      Total: 150 (+1)
+                    </label>
+                    <label style="width: 144px; padding: 10px; text-align: center; cursor: pointer; background-color: #aaa; color: #000;">
+                      <input type="radio" name="userToggle" value="UserB" style="display: none;" onclick="
+                        this.parentElement.style.backgroundColor='#aaa';
+                        this.parentElement.style.color='000';
+                        this.parentElement.previousElementSibling.style.backgroundColor='#000';
+                        this.parentElement.previousElementSibling.style.color='#aaa';
+                      ">
+                      Client<br>
+                      Total: 700 (+12)
+                    </label>
+                  </div>
+                <br>
+                <div class="search">
+                  <input type="text" placeholder="Search by User ID/Username/Displayname" style="width: 288px;">
+                  <div class="sort">
+                  <select>
+                    <option value="newest">All</option>
+                    <option value="score">Direct Deals</option>
+                    <option value="score">Promoted Deals</option>
+                  </select>
+                  </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Username/Displayname</th>
+                            <th>Rating</th>
+                            <th>Registration Date</th>
+                            <th>Last Active Date</th>
+                            <th>Order Quantity</th>
+                            <th>Total Spend</th>
+                            <th>Ave. Order Value</th>
+                            <th>Order Sub-industries</th>
+                            <th>Total Commission Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ID2501232305</td>
+                            <td><a href="#">username123<br>Display Name</a></td>
+                            <td>8.5(15)</td>
+                            <td>2025/01/01<br>10:30 AM</td>
+                            <td>2025/01/15<br>11:20 PM</td>
+                            <td>10<br>PromotedOrders<br>5<br>DirectOrders</td>
+                            <td>$20000<br>PromotedOrders<br>$1000<br>DirectOrders</td>
+                            <td>$100<br>PromotedOrders<br>$50<br>DirectOrders</td>
+                            <td>Vocational<br>Test Preparation<br>Homework</td>
+                            <td>$159</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        <p><font style="color: #aaa;">Page 1 / 1  Prev / Next</font></p>
+
+        </div>
+        </body>
+        </html>

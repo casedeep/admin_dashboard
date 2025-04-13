@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Sub-industries</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #ccc;
+      font-family: Arial, sans-serif;
+      padding: 40px;
+    }
+
+    h1, h2 {
+      font-size: 12px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 6px;
+      margin-bottom: 15px;
+    }
+
+    a {
+      color: #6b97ae;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #79bbda;
+    }
+
+    .form-section {
+      display: none;
+      margin-bottom: 20px;
+      position: relative;
+      max-width: 400px;
+    }
+
+    .form-section input[type="text"] {
+      width: 94.5%;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 6px;
+      color: #ccc;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      padding: 8px 16px;
+      background-color: #2a3b52;
+      border: none;
+      border-radius: 5px;
+      color: #ccc;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3a4b65;
+    }
+
+    .sub-industry {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #1e1e1e;
+      padding: 10px;
+      border: 1px solid #333;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    .sub-industry-actions button {
+      margin-left: 5px;
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+
+    #createSubIndustryButton {
+      margin-bottom: 15px;
+    }
+
+    .form-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: #ccc;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1><a href="industries.html">Industries</a> <font style="color: #555;">|</font> <a href="#">Logout</a><br><br><span style="font-size: large;">Sub-industries</span></h1>
+
+  <button id="createSubIndustryButton" onclick="showCreateSubIndustryForm()">Create Sub-industry</button>
+
+  <div class="form-section" id="createSubIndustryForm">
+    <div class="form-header">
+      <p id="formTitle">Create Sub-industry</p>
+      <button class="close-btn" onclick="hideCreateSubIndustryForm()">✕</button>
+    </div>
+    <input type="text" id="subIndustryName-ja" placeholder="Sub-industry Name (ja)">
+    <input type="text" id="subIndustryName-en" placeholder="Sub-industry Name (en)">
+    <input type="text" id="subIndustryPath" placeholder="Sub-industry URL Path" maxlength="16">
+    <div class="buttons">
+      <button onclick="addOrEditSubIndustry()">OK</button>
+      <button onclick="resetForm(); hideCreateSubIndustryForm()">Cancel</button>
+    </div>
+  </div>
+
+  <h2>Sub-industries List</h2>
+  <div id="subIndustryList"></div>
+
+  <script>
+    const subIndustryList = [];
+    let currentEditIndex = -1;
+
+    function showCreateSubIndustryForm() {
+      const form = document.getElementById('createSubIndustryForm');
+      const title = document.getElementById('formTitle');
+      const createBtn = document.getElementById('createSubIndustryButton');
+
+      form.style.display = 'block';
+      createBtn.style.display = 'none';
+
+      if (currentEditIndex === -1) {
+        title.innerText = 'Create Sub-industry';
+        resetForm();
+      } else {
+        const subIndustry = subIndustryList[currentEditIndex];
+        title.innerText = 'Edit Sub-industry';
+        document.getElementById('subIndustryName-ja').value = subIndustry.nameJa;
+        document.getElementById('subIndustryName-en').value = subIndustry.nameEn;
+        document.getElementById('subIndustryPath').value = subIndustry.id;
+      }
+    }
+
+    function hideCreateSubIndustryForm() {
+      document.getElementById('createSubIndustryForm').style.display = 'none';
+      document.getElementById('createSubIndustryButton').style.display = 'inline-block';
+      resetForm();
+    }
+
+    function addOrEditSubIndustry() {
+      const nameJa = document.getElementById('subIndustryName-ja').value.trim();
+      const nameEn = document.getElementById('subIndustryName-en').value.trim();
+      const id = document.getElementById('subIndustryPath').value.trim();
+
+      if (!nameJa || !nameEn || !id) {
+        alert('Please enter all fields');
+        return;
+      }
+
+      if (currentEditIndex === -1) {
+        subIndustryList.push({ nameJa, nameEn, id });
+      } else {
+        subIndustryList[currentEditIndex] = { nameJa, nameEn, id };
+      }
+
+      renderList();
+      hideCreateSubIndustryForm();
+    }
+
+    function resetForm() {
+      document.getElementById('subIndustryName-ja').value = '';
+      document.getElementById('subIndustryName-en').value = '';
+      document.getElementById('subIndustryPath').value = '';
+      currentEditIndex = -1;
+    }
+
+    function renderList() {
+      const container = document.getElementById('subIndustryList');
+      container.innerHTML = '';
+      subIndustryList.forEach((subIndustry, index) => {
+        const div = document.createElement('div');
+        div.className = 'sub-industry';
+        div.innerHTML = `
+          <div>
+            <strong>${subIndustry.nameJa}</strong> (${subIndustry.nameEn})<br>
+            <small style="color: #888;">${subIndustry.id}</small>
+          </div>
+          <div class="sub-industry-actions">
+            <button onclick="moveUp(${index})">Up</button>
+            <button onclick="moveDown(${index})">Down</button>
+            <button onclick="editSubIndustry(${index})">Edit</button>
+            <button onclick="deleteSubIndustry(${index})">Delete</button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function moveUp(index) {
+      if (index === 0) return;
+      [subIndustryList[index - 1], subIndustryList[index]] = [subIndustryList[index], subIndustryList[index - 1]];
+      renderList();
+    }
+
+    function moveDown(index) {
+      if (index === subIndustryList.length - 1) return;
+      [subIndustryList[index + 1], subIndustryList[index]] = [subIndustryList[index], subIndustryList[index + 1]];
+      renderList();
+    }
+
+    function deleteSubIndustry(index) {
+      if (confirm("Are you sure to delete?")) {
+        subIndustryList.splice(index, 1);
+        renderList();
+      }
+    }
+
+    function editSubIndustry(index) {
+      currentEditIndex = index;
+      showCreateSubIndustryForm();
+    }
+  </script>
+
+</body>
+</html>

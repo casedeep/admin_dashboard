@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #ccc;
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      color: #6b97ae;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #79bbda;
+    }
+
+    .dashboard-container {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 40px;
+      background-color: #1e1e1e;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 14px;
+      color: #ccc;
+      margin-bottom: 10px;
+    }
+
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: stretch;
+    }
+
+    .button-group button {
+      padding: 14px;
+      background-color: #2a3b52;
+      color: #ccc;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 100%;
+    }
+
+    .button-group button:hover {
+      background-color: #3a4b65;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-container">
+    <h1>Admin Dashboard <font style="color: #555;">|</font> <a href="admin_login.html">Logout</a></h1>
+    <span style="font-size:small;">Last Login: 2025-03-12 10:30 PM</span><p>
+    <div class="button-group">
+      <button onclick="location.href='members.html'">Manage Members</button>
+      <button onclick="location.href='industries.html'">Manage Industries / Sub-industries</button>
+      <button onclick="location.href='locations.html'">Manage Locations</button>
+      <button onclick="location.href='currency.html'">Manage Currency</button>
+    </div>
+  </div>
+
+</body>
+</html>
