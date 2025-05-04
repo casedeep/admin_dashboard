@@ -112,6 +112,8 @@
     </div>
     <input type="text" id="industryName-ja" placeholder="Industry Name (ja)">
     <input type="text" id="industryName-en" placeholder="Industry Name (en)">
+    <input type="text" id="industryTitle-ja" placeholder="Industry Title (ja)">
+    <input type="text" id="industryTitle-en" placeholder="Industry Title (en)">
     <input type="text" id="industryPath" placeholder="Industry URL Path" maxlength="16">
     <div class="buttons">
       <button onclick="addOrEditIndustry()">OK</button>
@@ -142,6 +144,8 @@
         title.innerText = 'Edit Industry';
         document.getElementById('industryName-ja').value = industry.nameJa;
         document.getElementById('industryName-en').value = industry.nameEn;
+        document.getElementById('industryTitle-ja').value = industry.titleJa;
+        document.getElementById('industryTitle-en').value = industry.titleEn;
         document.getElementById('industryPath').value = industry.id;
       }
     }
@@ -155,17 +159,19 @@
     function addOrEditIndustry() {
       const nameJa = document.getElementById('industryName-ja').value.trim();
       const nameEn = document.getElementById('industryName-en').value.trim();
+      const titleJa = document.getElementById('industryTitle-ja').value.trim();
+      const titleEn = document.getElementById('industryTitle-en').value.trim();
       const id = document.getElementById('industryPath').value.trim();
 
-      if (!nameJa || !nameEn || !id) {
+      if (!nameJa || !nameEn || !titleJa || !titleEn || !id) {
         alert('Please enter all fields');
         return;
       }
 
       if (currentEditIndex === -1) {
-        industryList.push({ nameJa, nameEn, id });
+        industryList.push({ nameJa, nameEn, titleJa, titleEn, id });
       } else {
-        industryList[currentEditIndex] = { nameJa, nameEn, id };
+        industryList[currentEditIndex] = { nameJa, nameEn, titleJa, titleEn, id };
       }
 
       renderList();
@@ -175,6 +181,8 @@
     function resetForm() {
       document.getElementById('industryName-ja').value = '';
       document.getElementById('industryName-en').value = '';
+      document.getElementById('industryTitle-ja').value = '';
+      document.getElementById('industryTitle-en').value = '';
       document.getElementById('industryPath').value = '';
       currentEditIndex = -1;
     }
@@ -188,6 +196,7 @@
         div.innerHTML = `
           <div>
             <strong>${industry.nameJa}</strong> (${industry.nameEn})<br>
+            <span style="font-size: 12px; color: #aaa;">${industry.titleJa} / ${industry.titleEn}</span><br>
             <small style="color: #888;">${industry.id}</small>
           </div>
           <div class="industry-actions">
