@@ -114,6 +114,8 @@
     <input type="text" id="industryName-en" placeholder="Industry Name (en)">
     <input type="text" id="industryTitle-ja" placeholder="Industry Title (ja)">
     <input type="text" id="industryTitle-en" placeholder="Industry Title (en)">
+    <input type="text" id="industryMeta-ja" placeholder="Industry Meta (ja)">
+    <input type="text" id="industryMeta-en" placeholder="Industry Meta (en)">
     <input type="text" id="industryPath" placeholder="Industry URL Path (homepage.com/whatname)" maxlength="16">
     <div class="buttons">
       <button onclick="addOrEditIndustry()">OK</button>
@@ -146,6 +148,8 @@
         document.getElementById('industryName-en').value = industry.nameEn;
         document.getElementById('industryTitle-ja').value = industry.titleJa;
         document.getElementById('industryTitle-en').value = industry.titleEn;
+        document.getElementById('industryMeta-ja').value = industry.metaJa;
+        document.getElementById('industryMeta-en').value = industry.metaEn;
         document.getElementById('industryPath').value = industry.id;
       }
     }
@@ -161,17 +165,19 @@
       const nameEn = document.getElementById('industryName-en').value.trim();
       const titleJa = document.getElementById('industryTitle-ja').value.trim();
       const titleEn = document.getElementById('industryTitle-en').value.trim();
+      const metaJa = document.getElementById('industryMeta-ja').value.trim();
+      const metaEn = document.getElementById('industryMeta-en').value.trim();
       const id = document.getElementById('industryPath').value.trim();
 
-      if (!nameJa || !nameEn || !titleJa || !titleEn || !id) {
+      if (!nameJa || !nameEn || !titleJa || !titleEn || !metaJa || !metaEn || !id) {
         alert('Please enter all fields');
         return;
       }
 
       if (currentEditIndex === -1) {
-        industryList.push({ nameJa, nameEn, titleJa, titleEn, id });
+        industryList.push({ nameJa, nameEn, titleJa, titleEn, metaJa, metaEn, id });
       } else {
-        industryList[currentEditIndex] = { nameJa, nameEn, titleJa, titleEn, id };
+        industryList[currentEditIndex] = { nameJa, nameEn, titleJa, titleEn, metaJa, metaEn, id };
       }
 
       renderList();
@@ -183,6 +189,8 @@
       document.getElementById('industryName-en').value = '';
       document.getElementById('industryTitle-ja').value = '';
       document.getElementById('industryTitle-en').value = '';
+      document.getElementById('industryMeta-ja').value = '';
+      document.getElementById('industryMeta-en').value = '';
       document.getElementById('industryPath').value = '';
       currentEditIndex = -1;
     }

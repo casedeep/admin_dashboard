@@ -112,8 +112,10 @@
     </div>
     <input type="text" id="subIndustryName-ja" placeholder="Sub-industry Name (ja)">
     <input type="text" id="subIndustryName-en" placeholder="Sub-industry Name (en)">
-    <input type="text" id="subIndustryTitle-ja" placeholder="Sub-Industry Title (ja)">
-    <input type="text" id="subIndustryTitle-en" placeholder="Sub-Industry Title (en)">
+    <input type="text" id="subIndustryTitle-ja" placeholder="Sub-industry Title (ja)">
+    <input type="text" id="subIndustryTitle-en" placeholder="Sub-industry Title (en)">
+    <input type="text" id="subIndustryMeta-ja" placeholder="Sub-industry Meta (ja)">
+    <input type="text" id="subIndustryMeta-en" placeholder="Sub-industry Meta (en)">
     <input type="text" id="subIndustryPath" placeholder="Sub-industry URL Path (homepage.com/industry/whatname)" maxlength="16">
     <div class="buttons">
       <button onclick="addOrEditSubIndustry()">OK</button>
@@ -144,9 +146,11 @@
         title.innerText = 'Edit Sub-industry';
         document.getElementById('subIndustryName-ja').value = subIndustry.nameJa;
         document.getElementById('subIndustryName-en').value = subIndustry.nameEn;
-        document.getElementById('subIndustryPath').value = subIndustry.id;
         document.getElementById('subIndustryTitle-ja').value = subIndustry.titleJa;
         document.getElementById('subIndustryTitle-en').value = subIndustry.titleEn;
+        document.getElementById('subIndustryMeta-ja').value = subIndustry.metaJa || '';
+        document.getElementById('subIndustryMeta-en').value = subIndustry.metaEn || '';
+        document.getElementById('subIndustryPath').value = subIndustry.id;
       }
     }
 
@@ -159,19 +163,21 @@
     function addOrEditSubIndustry() {
       const nameJa = document.getElementById('subIndustryName-ja').value.trim();
       const nameEn = document.getElementById('subIndustryName-en').value.trim();
-      const id = document.getElementById('subIndustryPath').value.trim();
       const titleJa = document.getElementById('subIndustryTitle-ja').value.trim();
       const titleEn = document.getElementById('subIndustryTitle-en').value.trim();
+      const metaJa = document.getElementById('subIndustryMeta-ja').value.trim();
+      const metaEn = document.getElementById('subIndustryMeta-en').value.trim();
+      const id = document.getElementById('subIndustryPath').value.trim();
 
-      if (!nameJa || !nameEn || !id || !titleJa || !titleEn) {
+      if (!nameJa || !nameEn || !id || !titleJa || !titleEn || !metaJa || !metaEn) {
         alert('Please enter all fields');
         return;
       }
 
       if (currentEditIndex === -1) {
-        subIndustryList.push({ nameJa, nameEn, id, titleJa, titleEn });
+        subIndustryList.push({ nameJa, nameEn, id, titleJa, titleEn, metaJa, metaEn });
       } else {
-        subIndustryList[currentEditIndex] = { nameJa, nameEn, id, titleJa, titleEn };
+        subIndustryList[currentEditIndex] = { nameJa, nameEn, id, titleJa, titleEn, metaJa, metaEn };
       }
 
       renderList();
@@ -181,9 +187,11 @@
     function resetForm() {
       document.getElementById('subIndustryName-ja').value = '';
       document.getElementById('subIndustryName-en').value = '';
-      document.getElementById('subIndustryPath').value = '';
       document.getElementById('subIndustryTitle-ja').value = '';
       document.getElementById('subIndustryTitle-en').value = '';
+      document.getElementById('subIndustryMeta-ja').value = '';
+      document.getElementById('subIndustryMeta-en').value = '';
+      document.getElementById('subIndustryPath').value = '';
       currentEditIndex = -1;
     }
 
