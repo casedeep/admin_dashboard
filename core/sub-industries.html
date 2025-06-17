@@ -110,7 +110,7 @@
       <p id="formTitle">Create Sub-industry</p>
       <button class="close-btn" onclick="hideCreateSubIndustryForm()">✕</button>
     </div>
-    <input type="text" id="subIndustryPath" placeholder="Sub-industry URL Path (homepage.com/industry/whatisthispath)" maxlength="16">
+    <input type="text" id="subIndustryPath" placeholder="Sub-industry URL Path (website.com/industry/whatisthispath)" maxlength="16">
     <div class="buttons">
       <button onclick="addOrEditSubIndustry()">OK</button>
       <button onclick="resetForm(); hideCreateSubIndustryForm()">Cancel</button>
@@ -179,7 +179,7 @@
         div.className = 'sub-industry';
         div.innerHTML = `
           <div>
-            <strong>${subIndustry.id}</strong>
+            ${subIndustry.id}
           </div>
           <div class="sub-industry-actions">
             <button onclick="moveUp(${index})">Up</button>
