@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Manage Locations</title>
   <style>
@@ -115,9 +115,9 @@
       <p id="formTitle">Create Location</p>
       <button class="close-btn" onclick="hideCreateLocationForm()">✕</button>
     </div>
-    <input type="text" id="locationName_ja" placeholder="Location Name (ja)">
-    <input type="text" id="locationName_en" placeholder="Location Name (en)">
+
     <input type="text" id="locationId" placeholder="Location ID" maxlength="32">
+
     <div class="buttons">
       <button onclick="addOrEditLocation()">OK</button>
       <button onclick="resetForm(); hideCreateLocationForm()">Cancel</button>
@@ -145,8 +145,6 @@
       } else {
         const location = locationList[currentEditIndex];
         title.innerText = 'Edit Location';
-        document.getElementById('locationName_ja').value = location.name1;
-        document.getElementById('locationName_en').value = location.name2;
         document.getElementById('locationId').value = location.id;
       }
     }
@@ -158,19 +156,17 @@
     }
 
     function addOrEditLocation() {
-      const name1 = document.getElementById('locationName_ja').value.trim();
-      const name2 = document.getElementById('locationName_en').value.trim();
       const id = document.getElementById('locationId').value.trim();
 
-      if (!name1 || !name2 || !id) {
-        alert('Please enter both location names and ID');
+      if (!id) {
+        alert('Please enter Location ID');
         return;
       }
 
       if (currentEditIndex === -1) {
-        locationList.push({ name1, name2, id });
+        locationList.push({ id });
       } else {
-        locationList[currentEditIndex] = { name1, name2, id };
+        locationList[currentEditIndex] = { id };
       }
 
       renderList();
@@ -178,8 +174,6 @@
     }
 
     function resetForm() {
-      document.getElementById('locationName_ja').value = '';
-      document.getElementById('locationName_en').value = '';
       document.getElementById('locationId').value = '';
       currentEditIndex = -1;
     }
@@ -192,7 +186,7 @@
         div.className = 'location';
         div.innerHTML = `
           <div>
-            <strong>${location.name1}</strong> / ${location.name2} (${location.id})
+            ${location.id}
           </div>
           <div class="location-actions">
             <button onclick="moveUp(${index})">Up</button>

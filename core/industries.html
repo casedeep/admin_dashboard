@@ -35,7 +35,8 @@
       max-width: 400px;
     }
 
-    .form-section input[type="text"] {
+    .form-section input[type="text"],
+    .form-section input[type="number"] {
       width: 94.5%;
       padding: 10px;
       margin-bottom: 10px;
@@ -111,6 +112,7 @@
       <button class="close-btn" onclick="hideCreateIndustryForm()">✕</button>
     </div>
     <input type="text" id="industryPath" placeholder="Industry URL Path (homepage.com/whatisthispath)" maxlength="16">
+    <input type="number" id="revenueShareRate" placeholder="Revenue Share Rate" value="36.5" step="0.1" oninput="this.value = this.value.replace(/[^\d.]/g, '').replace(/[。．｡]/g, '').replace(/^(\d*\.\d{0,2}).*$/, '$1').replace(/(\..*)\./g, ''); if (!/^\d/.test(this.value)) this.value = '';" maxlength="5">
     <div class="buttons">
       <button onclick="addOrEditIndustry()">OK</button>
       <button onclick="resetForm(); hideCreateIndustryForm()">Cancel</button>
@@ -139,6 +141,7 @@
         const industry = industryList[currentEditIndex];
         title.innerText = 'Edit Industry';
         document.getElementById('industryPath').value = industry.id;
+        document.getElementById('revenueShareRate').value = industry.revenueShareRate;
       }
     }
 
@@ -150,16 +153,17 @@
 
     function addOrEditIndustry() {
       const id = document.getElementById('industryPath').value.trim();
+      const revenueShareRate = parseFloat(document.getElementById('revenueShareRate').value.trim());
 
-      if (!id) {
-        alert('Please enter the industry URL path');
+      if (!id || isNaN(revenueShareRate)) {
+        alert('Please enter both the industry URL path and a valid Revenue Share Rate.');
         return;
       }
 
       if (currentEditIndex === -1) {
-        industryList.push({ id });
+        industryList.push({ id, revenueShareRate });
       } else {
-        industryList[currentEditIndex] = { id };
+        industryList[currentEditIndex] = { id, revenueShareRate };
       }
 
       renderList();
@@ -168,6 +172,7 @@
 
     function resetForm() {
       document.getElementById('industryPath').value = '';
+      document.getElementById('revenueShareRate').value = '36.5';
       currentEditIndex = -1;
     }
 
@@ -179,7 +184,7 @@
         div.className = 'industry';
         div.innerHTML = `
           <div>
-            <strong>${industry.id}</strong>
+            ${industry.id} &nbsp; | &nbsp; Revenue Share: ${industry.revenueShareRate}%
           </div>
           <div class="industry-actions">
             <button onclick="window.location.href='sub-industries.html?id=${encodeURIComponent(industry.id)}'">Sub-industries</button>
